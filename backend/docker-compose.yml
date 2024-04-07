@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    user: "root:root"
+    ports:
+      - "8010:8010"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: always
+    command:
+      [
+        "bash",
+        "-c",
+        "echo ''alias ll='ls -l' '' >> ~/.bashrc && pip install -r requirements.txt && cd ./src && uvicorn main:app --host 0.0.0.0 --port 8010 --reload --workers 1",
+      ]
