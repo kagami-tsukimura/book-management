@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    user: "root:root"
+    ports:
+      - "8010:8010"
+    volumes:
+      - .:/app
+    restart: always
+    environment:
+      - PYTHONUNBUFFERED=1
+    command:
+      [
+        "bash",
+        "-c",
+        "echo ''alias ll='ls -l' '' >> ~/.bashrc && pip install -r requirements.txt && cd ./src && uvicorn main:app --host 0.0.0.0 --port 8010 --reload --workers 1",
+      ]
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:16-alpine
+    container_name: postgresql
+    restart: always
+    user: "$UID:$GID"
+    ports:
+      - 35432:5432
+    volumes:
+      - ./docker/postgresql/init.d:/docker-entrypoint-initdb.d
+      - ./docker/postgresql/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_DB: admin
+      TZ: "Asia/Tokyo"
+    hostname: postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    user: "$UID:$GID"
+    ports:
+      - 82:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - postgresql
