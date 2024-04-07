@@ -1,7 +1,10 @@
 import uvicorn
 from fastapi import FastAPI
+from routers import genre
 
 app = FastAPI()
+
+app.include_router(genre.router)
 
 
 @app.get("/")
