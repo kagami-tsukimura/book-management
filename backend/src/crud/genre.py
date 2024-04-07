@@ -3,13 +3,14 @@ import os
 import sys
 from typing import List
 
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 parent_dir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(parent_dir)
 
 from models import Genre
-from schemas.schemas import GenreCreate
+from schemas.schemas import GenreCreate, GenreUpdate
 
 
 def find_all(db: Session) -> List[Genre]:
@@ -24,6 +25,21 @@ def find_all(db: Session) -> List[Genre]:
     """
 
     return db.query(Genre).order_by(Genre.genre_id).all()
+
+
+def find_by_id(db: Session, genre_id: int) -> Genre:
+    """
+    指定したIDのジャンルを取得します。
+
+    Args:
+        db (Session): データベースセッション
+        genre_id (int): 取得するジャンルのID
+
+    Returns:
+        Genre: 指定したIDのジャンル
+    """
+
+    return db.query(Genre).filter(Genre.genre_id == genre_id).first()
 
 
 def create(db: Session, create_genre: GenreCreate) -> Genre:
@@ -43,3 +59,38 @@ def create(db: Session, create_genre: GenreCreate) -> Genre:
     db.commit()
 
     return new_genre
+
+
+def update(db: Session, genre_id: int, update_genre: GenreUpdate) -> Genre:
+    """
+    ジャンルを更新します。
+
+    Args:
+        db (Session): データベースセッション
+        update_genre (GenreCreate): 更新するジャンル
+        genre_id (int): 更新するジャンルのID
+
+    Returns:
+        Genre: 更新したジャンル
+    """
+
+    target_genre = find_by_id(db, genre_id)
+
+    if not target_genre:
+        raise HTTPException(status_code=404, details="Genre not found.")
+
+    target_genre.main_genre_name = (
+        update_genre.main_genre_name
+        if update_genre.main_genre_name
+        else target_genre.main_genre_name
+    )
+    target_genre.sub_genre_name = (
+        update_genre.sub_genre_name
+        if update_genre.sub_genre_name
+        else target_genre.sub_genre_name
+    )
+
+    db.add(target_genre)
+    db.commit()
+
+    return target_genre
