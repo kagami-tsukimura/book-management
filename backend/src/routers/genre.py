@@ -11,7 +11,7 @@ sys.path.append(parent_dir)
 
 from crud import genre as genre_cruds
 from dependencies import Dependencies
-from schemas.schemas import GenereResponse
+from schemas.schemas import GenereResponse, GenreCreate
 
 dependencies = Dependencies()
 DBDependency = dependencies.get_db_dependency()
@@ -22,3 +22,10 @@ router = APIRouter(prefix="/genre", tags=["genre"])
 @router.get("", response_model=List[GenereResponse], status_code=status.HTTP_200_OK)
 async def find_all(db: DBDependency):
     return genre_cruds.find_all(db)
+
+
+@router.post(
+    "/{id}", response_model=GenereResponse, status_code=status.HTTP_201_CREATED
+)
+async def create(db: DBDependency, create_genre: GenreCreate):
+    return genre_cruds.create(db, create_genre)
