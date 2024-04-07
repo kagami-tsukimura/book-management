@@ -94,3 +94,26 @@ def update(db: Session, genre_id: int, update_genre: GenreUpdate) -> Genre:
     db.commit()
 
     return target_genre
+
+
+def delete(db: Session, genre_id: int) -> Genre:
+    """
+    ジャンルを削除します。
+
+    Args:
+        db (Session): データベースセッション
+        genre_id (int): 削除するジャンルのID
+
+    Returns:
+        Genre: 削除したジャンル
+    """
+
+    target_genre = find_by_id(db, genre_id)
+
+    if not target_genre:
+        raise HTTPException(status_code=404, details="Genre not found.")
+
+    db.delete(target_genre)
+    db.commit()
+
+    return target_genre

@@ -50,3 +50,15 @@ async def update(
         HTTPException(status_code=404, details="Genre not updated.")
 
     return updated_genre
+
+
+@router.delete(
+    "/{genre_id}", response_model=GenreResponse, status_code=status.HTTP_200_OK
+)
+async def delete(db: DBDependency, genre_id: int = Path(gt=0)):
+
+    deleted_genre = genre_cruds.delete(db, genre_id)
+    if not deleted_genre:
+        HTTPException(status_code=404, details="Genre not deleted.")
+
+    return deleted_genre
