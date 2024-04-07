@@ -1,3 +1,5 @@
 .env
 __pycache__
 fast/
+migrations/
+src/alembic.ini
