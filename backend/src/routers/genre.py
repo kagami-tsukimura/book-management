@@ -3,7 +3,7 @@ import os
 import sys
 from typing import List
 
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter, HTTPException, Path, Query
 from starlette import status
 
 parent_dir = os.path.join(os.path.dirname(__file__), "..")
@@ -28,6 +28,19 @@ async def find_all(db: DBDependency):
 @router.get("/{genre_id}", response_model=GenreResponse, status_code=status.HTTP_200_OK)
 async def find_by_id(db: DBDependency, genre_id: int = Path(gt=0)):
     found_genre = genre_cruds.find_by_id(db, genre_id)
+    if not found_genre:
+        raise HTTPException(status_code=404, detail="Genre not found.")
+
+    return found_genre
+
+
+@router.get(
+    "/",
+    response_model=List[GenreResponse],
+    status_code=status.HTTP_200_OK,
+)
+async def find_by_name(db: DBDependency, main_genre_name: str = Query(max_length=255)):
+    found_genre = genre_cruds.find_by_name(db, main_genre_name)
     if not found_genre:
         raise HTTPException(status_code=404, detail="Genre not found.")
 

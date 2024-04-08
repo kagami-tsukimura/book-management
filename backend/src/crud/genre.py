@@ -42,6 +42,26 @@ def find_by_id(db: Session, genre_id: int) -> Genre:
     return db.query(Genre).filter(Genre.genre_id == genre_id).first()
 
 
+def find_by_name(db: Session, main_genre_name: str) -> List[Genre]:
+    """
+    指定した名前のジャンルを部分一致で取得します。
+
+    Args:
+        db (Session): データベースセッション
+        main_genre_name (str): 取得するジャンル名
+
+    Returns:
+        Genre: 指定した名前のジャンル
+    """
+
+    return (
+        db.query(Genre)
+        .filter(Genre.main_genre_name.contains(main_genre_name))
+        .order_by(Genre.genre_id)
+        .all()
+    )
+
+
 def create(db: Session, create_genre: GenreCreate) -> Genre:
     """
     ジャンルを新規登録します。
