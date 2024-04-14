@@ -1,5 +1,6 @@
 from database.database import Base
-from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql.functions import current_timestamp
 
 
@@ -13,3 +14,20 @@ class Genre(Base):
     updated_at = Column(
         DateTime, default=current_timestamp(), onupdate=current_timestamp()
     )
+
+
+class Book(Base):
+    __tablename__ = "book_master"
+
+    book_id = Column(Integer, primary_key=True)
+    title = Column(String, nullable=False)
+    author = Column(String, nullable=False)
+    genre_id = Column(
+        Integer, ForeignKey("genre_master.genre_id", ondelete="CASCADE"), nullable=False
+    )
+    created_at = Column(DateTime, default=current_timestamp())
+    updated_at = Column(
+        DateTime, default=current_timestamp(), onupdate=current_timestamp()
+    )
+
+    genre = relationship("Genre", back_populates="book_master")
