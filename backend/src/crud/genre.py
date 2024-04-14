@@ -87,7 +87,7 @@ def update(db: Session, genre_id: int, update_genre: GenreUpdate) -> Genre:
 
     Args:
         db (Session): データベースセッション
-        update_genre (GenreCreate): 更新するジャンル
+        update_genre (GenreUpdate): 更新するジャンル
         genre_id (int): 更新するジャンルのID
 
     Returns:
