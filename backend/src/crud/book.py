@@ -94,3 +94,26 @@ def update(db: Session, book_id: int, update_book: BookUpdate) -> Book:
     db.commit()
 
     return target_book
+
+
+def delete(db: Session, book_id: int) -> Book:
+    """
+    本を削除します。
+
+    Args:
+        db (Session): データベースセッション
+        book_id (int): 削除する本のID
+
+    Returns:
+        Book: 削除した本
+    """
+
+    target_book = find_by_id(db, book_id)
+
+    if not target_book:
+        raise HTTPException(status_code=404, details="Book not found.")
+
+    db.delete(target_book)
+    db.commit()
+
+    return target_book
