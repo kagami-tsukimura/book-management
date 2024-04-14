@@ -1,7 +1,6 @@
 from database.database import Base
 from schemas.schemas import BookStatus
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
 from sqlalchemy.sql.functions import current_timestamp
 
 
@@ -31,5 +30,3 @@ class Book(Base):
     updated_at = Column(
         DateTime, default=current_timestamp(), onupdate=current_timestamp()
     )
-
-    genre = relationship("Genre", back_populates="book_master")
