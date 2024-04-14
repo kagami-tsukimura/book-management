@@ -42,3 +42,11 @@ async def create(db: DBDependency, create_book: BookCreate):
 async def update(db: DBDependency, update_book: BookUpdate, book_id: int = Path(gt=0)):
 
     return book_cruds.update(db, book_id, update_book)
+
+
+@router.delete(
+    "/{book_id}", response_model=BookResponse, status_code=status.HTTP_200_OK
+)
+async def delete(db: DBDependency, book_id: int = Path(gt=0)):
+
+    return book_cruds.delete(db, book_id)
