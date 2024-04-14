@@ -1,10 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
-from routers import genre
+from routers import book, genre
 
 app = FastAPI()
 
 app.include_router(genre.router)
+app.include_router(book.router)
 
 
 @app.get("/")

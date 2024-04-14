@@ -1,3 +1,4 @@
+# type: ignore
 # flake8: noqa: E402
 import os
 import sys
