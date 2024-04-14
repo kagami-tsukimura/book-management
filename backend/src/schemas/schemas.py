@@ -6,12 +6,12 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class GenreCreate(BaseModel):
-    main_genre_name: str = Field(max_length=255, examples=["プログラミング"])
+    main_genre_name: Optional[str] = Field(max_length=255, examples=["プログラミング"])
     sub_genre_name: Optional[str] = Field(None, max_length=255, examples=["Python"])
 
 
 class GenreUpdate(BaseModel):
-    main_genre_name: str = Field(max_length=255, examples=["プログラミング"])
+    main_genre_name: str = Field(None, max_length=255, examples=["プログラミング"])
     sub_genre_name: Optional[str] = Field(None, max_length=255, examples=["Python"])
 
 
@@ -38,9 +38,9 @@ class BookCreate(BaseModel):
 
 
 class BookUpdate(BaseModel):
-    title: str = Field(max_length=255, examples=["Effective Python"])
-    author: str = Field(max_length=255, examples=["Brett Slatkin"])
-    genre_id: int = Field(gt=0, examples=[1])
+    title: Optional[str] = Field(None, max_length=255, examples=["Effective Python"])
+    author: Optional[str] = Field(None, max_length=255, examples=["Brett Slatkin"])
+    genre_id: Optional[int] = Field(None, gt=0, examples=[1])
     status: Optional[BookStatus] = Field(None, examples=[BookStatus.DONT_HAVE])
 
 

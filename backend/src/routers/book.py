@@ -26,7 +26,19 @@ async def find_all(db: DBDependency):
     return book_cruds.find_all(db)
 
 
+@router.get("/{book_id}", response_model=BookResponse, status_code=status.HTTP_200_OK)
+async def find_by_id(db: DBDependency, book_id: int = Path(gt=0)):
+
+    return book_cruds.find_by_id(db, book_id)
+
+
 @router.post("", response_model=BookResponse, status_code=status.HTTP_201_CREATED)
 async def create(db: DBDependency, create_book: BookCreate):
 
     return book_cruds.create(db, create_book)
+
+
+@router.put("/{book_id}", response_model=BookResponse, status_code=status.HTTP_200_OK)
+async def update(db: DBDependency, update_book: BookUpdate, book_id: int = Path(gt=0)):
+
+    return book_cruds.update(db, book_id, update_book)
