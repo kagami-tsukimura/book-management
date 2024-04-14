@@ -28,7 +28,7 @@ class GenreResponse(BaseModel):
 class BookStatus(Enum):
     HAVE = "HAVE"
     WANT = "WANT"
-    DONT_HAVE = "DONT_HAVE"
+    DONT_HAVE = "DON'T_HAVE"
 
 
 class BookCreate(BaseModel):
@@ -41,3 +41,16 @@ class BookUpdate(BaseModel):
     title: str = Field(max_length=255, examples=["Effective Python"])
     author: str = Field(max_length=255, examples=["Brett Slatkin"])
     genre_id: int = Field(gt=0, examples=[1])
+    status: Optional[BookStatus] = Field(None, examples=[BookStatus.DONT_HAVE])
+
+
+class BookResponse(BaseModel):
+    book_id: int = Field(gt=0, examples=[1])
+    title: str = Field(max_length=255, examples=["Effective Python"])
+    author: str = Field(max_length=255, examples=["Brett Slatkin"])
+    genre_id: int = Field(gt=0, examples=[1])
+    status: BookStatus = Field(examples=[BookStatus.DONT_HAVE])
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
