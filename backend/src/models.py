@@ -1,5 +1,6 @@
 from database.database import Base
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
+from schemas.schemas import BookStatus
+from sqlalchemy import Column, DateTime, Enum, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.functions import current_timestamp
 
@@ -25,6 +26,7 @@ class Book(Base):
     genre_id = Column(
         Integer, ForeignKey("genre_master.genre_id", ondelete="CASCADE"), nullable=False
     )
+    correction = Column(Enum(BookStatus), nullable=False, default=BookStatus.DONT_HAVE)
     created_at = Column(DateTime, default=current_timestamp())
     updated_at = Column(
         DateTime, default=current_timestamp(), onupdate=current_timestamp()

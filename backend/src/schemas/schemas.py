@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -22,3 +23,21 @@ class GenreResponse(BaseModel):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class BookStatus(Enum):
+    HAVE = "HAVE"
+    WANT = "WANT"
+    DONT_HAVE = "DONT_HAVE"
+
+
+class BookCreate(BaseModel):
+    title: str = Field(max_length=255, examples=["Effective Python"])
+    author: str = Field(max_length=255, examples=["Brett Slatkin"])
+    genre_id: int = Field(gt=0, examples=[1])
+
+
+class BookUpdate(BaseModel):
+    title: str = Field(max_length=255, examples=["Effective Python"])
+    author: str = Field(max_length=255, examples=["Brett Slatkin"])
+    genre_id: int = Field(gt=0, examples=[1])
