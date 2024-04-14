@@ -25,7 +25,7 @@ class Book(Base):
     genre_id = Column(
         Integer, ForeignKey("genre_master.genre_id", ondelete="CASCADE"), nullable=False
     )
-    correction = Column(Enum(BookStatus), nullable=False, default=BookStatus.DONT_HAVE)
+    status = Column(Enum(BookStatus), nullable=False, default=BookStatus.DONT_HAVE)
     created_at = Column(DateTime, default=current_timestamp())
     updated_at = Column(
         DateTime, default=current_timestamp(), onupdate=current_timestamp()
