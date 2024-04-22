@@ -29,6 +29,11 @@ def test_find_by_name(client_fixture: TestClient):
     assert len(genres) == 2
 
 
+def test_find_by_name_failure(client_fixture: TestClient):
+    response = client_fixture.get("/genre/?main_genre_name=Network")
+    assert response.status_code == 404
+
+
 def test_create(client_fixture: TestClient):
     response = client_fixture.post(
         "/genre", json={"main_genre_name": "教養", "sub_genre_name": "簿記"}
