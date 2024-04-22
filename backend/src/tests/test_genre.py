@@ -61,3 +61,4 @@ def test_update_failure(client_fixture: TestClient):
         "/genre/10", json={"main_genre_name": "Device", "sub_genre_name": "Mouse"}
     )
     assert response.status_code == 404
+    assert response.json()["detail"] == "Genre not found."
