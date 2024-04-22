@@ -32,6 +32,7 @@ def test_find_by_name(client_fixture: TestClient):
 def test_find_by_name_failure(client_fixture: TestClient):
     response = client_fixture.get("/genre/?main_genre_name=Network")
     assert response.status_code == 404
+    assert response.json()["detail"] == "Genre not found."
 
 
 def test_create(client_fixture: TestClient):
@@ -44,4 +45,18 @@ def test_create(client_fixture: TestClient):
     assert genre["sub_genre_name"] == "簿記"
 
 
-# def test_update_success(client_fixture: TestClient):
+def test_update_success(client_fixture: TestClient):
+    response = client_fixture.put(
+        "/genre/1", json={"main_genre_name": "Device", "sub_genre_name": "Mouse"}
+    )
+    assert response.status_code == 200
+    genre = response.json()
+    assert genre["main_genre_name"] == "Device"
+    assert genre["sub_genre_name"] == "Mouse"
+
+
+# def test_update_failure(client_fixture: TestClient):
+#     response = client_fixture.put(
+#         "/genre/10", json={"main_genre_name": "Device", "sub_genre_name": "Mouse"}
+#     )
+#     assert response.status_code == 404
