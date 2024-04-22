@@ -56,8 +56,8 @@ def test_update_success(client_fixture: TestClient):
     assert genre["sub_genre_name"] == "Mouse"
 
 
-# def test_update_failure(client_fixture: TestClient):
-#     response = client_fixture.put(
-#         "/genre/10", json={"main_genre_name": "Device", "sub_genre_name": "Mouse"}
-#     )
-#     assert response.status_code == 404
+def test_update_failure(client_fixture: TestClient):
+    response = client_fixture.put(
+        "/genre/10", json={"main_genre_name": "Device", "sub_genre_name": "Mouse"}
+    )
+    assert response.status_code == 404
