@@ -20,6 +20,7 @@ def test_find_by_id_success(client_fixture: TestClient):
 def test_find_by_id_failure(client_fixture: TestClient):
     response = client_fixture.get("/genre/10")
     assert response.status_code == 404
+    assert response.json()["detail"] == "Genre not found."
 
 
 def test_find_by_name(client_fixture: TestClient):
