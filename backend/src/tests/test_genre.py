@@ -62,3 +62,18 @@ def test_update_failure(client_fixture: TestClient):
     )
     assert response.status_code == 404
     assert response.json()["detail"] == "Genre not found."
+
+
+def test_delete_success(client_fixture: TestClient):
+    response = client_fixture.delete("/genre/1")
+    assert response.status_code == 200
+    genre = response.json()
+    assert genre["genre_id"] == 1
+    assert genre["main_genre_name"] == "IT"
+    assert genre["sub_genre_name"] == "Python"
+
+
+def test_delete_failure(client_fixture: TestClient):
+    response = client_fixture.delete("/genre/10")
+    assert response.status_code == 404
+    assert response.json()["detail"] == "Genre not found."
