@@ -11,7 +11,9 @@ class GenreCreate(BaseModel):
 
 
 class GenreUpdate(BaseModel):
-    main_genre_name: str = Field(None, max_length=255, examples=["プログラミング"])
+    main_genre_name: Optional[str] = Field(
+        None, max_length=255, examples=["プログラミング"]
+    )
     sub_genre_name: Optional[str] = Field(None, max_length=255, examples=["Python"])
 
 
