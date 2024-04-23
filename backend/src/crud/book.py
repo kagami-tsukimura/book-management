@@ -77,7 +77,7 @@ def update(db: Session, book_id: int, update_book: BookUpdate) -> Book:
     target_book = find_by_id(db, book_id)
 
     if not target_book:
-        raise HTTPException(status_code=404, details="Book not found.")
+        raise HTTPException(status_code=404, detail="Book not found.")
 
     target_book.title = update_book.title if update_book.title else target_book.title
     target_book.author = (
@@ -111,7 +111,7 @@ def delete(db: Session, book_id: int) -> Book:
     target_book = find_by_id(db, book_id)
 
     if not target_book:
-        raise HTTPException(status_code=404, details="Book not found.")
+        raise HTTPException(status_code=404, detail="Book not found.")
 
     db.delete(target_book)
     db.commit()
