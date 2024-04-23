@@ -28,8 +28,12 @@ async def find_all(db: DBDependency):
 
 @router.get("/{book_id}", response_model=BookResponse, status_code=status.HTTP_200_OK)
 async def find_by_id(db: DBDependency, book_id: int = Path(gt=0)):
+    found_book = book_cruds.find_by_id(db, book_id)
 
-    return book_cruds.find_by_id(db, book_id)
+    if not found_book:
+        raise HTTPException(status_code=404, detail="Book not found.")
+
+    return found_book
 
 
 @router.post("", response_model=BookResponse, status_code=status.HTTP_201_CREATED)
