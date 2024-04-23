@@ -8,7 +8,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 parent_dir = os.path.join(os.path.dirname(__file__), "..")
 sys.path.append(parent_dir)
 
-from services.config import get_settings
+from config import get_settings
 
 DATABASE_URL = get_settings().database_url
 
